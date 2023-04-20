@@ -99,6 +99,9 @@ class Artwork
     #[ORM\ManyToMany(targetEntity: Artist::class, mappedBy: 'artwork')]
     private Collection $artists;
 
+    #[ORM\Column(type: Types::STRING, length: 400, nullable: true)]
+    private ?string $wikidataURL = null;
+
     public function __construct()
     {
         $this->artists = new ArrayCollection();
@@ -413,6 +416,18 @@ class Artwork
         if ($this->artists->removeElement($artist)) {
             $artist->removeArtwork($this);
         }
+
+        return $this;
+    }
+
+    public function getWikidataURL(): ?string
+    {
+        return $this->wikidataURL;
+    }
+
+    public function setWikidataURL(?string $wikidataURL): self
+    {
+        $this->wikidataURL = $wikidataURL;
 
         return $this;
     }

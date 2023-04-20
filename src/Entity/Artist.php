@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\ArtistRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -42,6 +44,14 @@ class Artist
 
     #[ORM\Column(type: Types::STRING, length: 400, nullable: true)]
     private ?string $wikidataURL = null;
+
+    #[ORM\ManyToMany(targetEntity: Artwork::class, inversedBy: 'artists')]
+    private Collection $artwork;
+
+    public function __construct()
+    {
+        $this->artwork = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -159,5 +169,29 @@ class Artist
     public function __toString(): string
     {
         return $this->displayName;
+    }
+
+    /**
+     * @return Collection<int, Artwork>
+     */
+    public function getArtwork(): Collection
+    {
+        return $this->artwork;
+    }
+
+    public function addArtwork(Artwork $artwork): self
+    {
+        if (!$this->artwork->contains($artwork)) {
+            $this->artwork->add($artwork);
+        }
+
+        return $this;
+    }
+
+    public function removeArtwork(Artwork $artwork): self
+    {
+        $this->artwork->removeElement($artwork);
+
+        return $this;
     }
 }

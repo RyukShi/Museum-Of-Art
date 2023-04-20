@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artist{% endblock %}
+
+{% block body %}
+    <h1>{{ artist.displayName }}</h1>
+
+    {% if artist.displayBio is not null %}
+        <p class="text-justify">
+            {{ artist.displayBio }}
+        </p>
+    {% endif %}
+
+    <a href="{{ path('app_artist_index') }}">back to list</a>
+{% endblock %}

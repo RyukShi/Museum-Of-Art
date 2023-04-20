@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artists{% endblock %}
+
+{% block body %}
+    <h1>Artist list</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>DisplayName</th>
+                <th>BeginDate</th>
+                <th>EndDate</th>
+                <th>Gender</th>
+                <th>Nationality</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for artist in artists %}
+            <tr>
+                <td>{{ artist.displayName }}</td>
+                <td>{{ artist.beginDate }}</td>
+                <td>{{ artist.endDate }}</td>
+                <td>{{ artist.gender }}</td>
+                <td>{{ artist.nationality }}</td>
+                <td>{{ artist.wikidataURL }}</td>
+                <td>
+                    <a href="{{ path('app_artist_show', {'id': artist.id}) }}">show</a>
+                    <a href="{{ path('app_artist_edit', {'id': artist.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">No records found in database</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_artist_new') }}">Create new</a>
+{% endblock %}

@@ -62,12 +62,17 @@ reigns = df["Reign"].value_counts().to_dict()
 states = df["State"].value_counts().to_dict()
 subregions = df["Subregion"].value_counts().to_dict()
 
-unique_cities = []
-for city in cities.keys():
-    if ',' in city or '|' in city:
-        #print(city)
-        pass
-    else:
-        unique_cities.append(city)
 
-print(unique_cities)
+def unique(d: dict):
+    unique_set = set()
+    for key in d.keys():
+        if '|' in key:
+            for el in key.split("|"):
+                unique_set.add(el.lower())
+        else:
+            unique_set.add(key.lower())
+    return list(unique_set)
+
+
+unique_cities = unique(cities)
+print(len(unique_cities))  # 2364 cities

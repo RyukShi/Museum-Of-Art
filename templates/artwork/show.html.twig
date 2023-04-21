@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artwork{% endblock %}
+
+{% block body %}
+    <h1>{{ artwork.title }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>ObjectName</th>
+                <td>{{ artwork.objectName }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ artwork.title }}</td>
+            </tr>
+            <tr>
+                <th>Dimensions</th>
+                <td>{{ artwork.dimensions }}</td>
+            </tr>
+            <tr>
+                <th>Medium</th>
+                <td>{{ artwork.medium }}</td>
+            </tr>
+            <tr>
+                <th>IsHighlight</th>
+                <td>{{ artwork.isHighlight ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>IsPublicDomain</th>
+                <td>{{ artwork.isPublicDomain ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_artwork_index') }}">back to list</a>
+
+    <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}">edit</a>
+{% endblock %}

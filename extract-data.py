@@ -1,5 +1,5 @@
 from pandas import read_csv
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData, Table
 
 disk_engine = create_engine("{server}+{dialect}://{username}:{password}@{host}:{port}/{database}".format(
     server='postgresql',
@@ -74,5 +74,26 @@ def unique(d: dict):
     return list(unique_set)
 
 
-unique_cities = unique(cities)
-print(len(unique_cities))  # 2364 cities
+data = {
+    "city": unique(cities),
+    "classification": unique(classifications),
+    "country": unique(countries),
+    "culture": unique(cultures),
+    "department": unique(departments),
+    "dynasty": unique(dynasties),
+    "excavation": unique(excavations),
+    "period": unique(periods),
+    "region": unique(regions),
+    "reign": unique(reigns),
+    "state": unique(states),
+    "subregion": unique(subregions)
+}
+
+with disk_engine.connect() as conn:
+    with conn.begin():
+        metadata = MetaData()
+        for table_name, rows in data.items():
+            table = Table(table_name, metadata, autoload_with=disk_engine)
+            for row in rows:
+                stmt = table.insert().values(name=row)
+                conn.execute(stmt)

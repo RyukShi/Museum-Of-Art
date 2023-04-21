@@ -48,8 +48,12 @@ class ClassificationController extends AbstractController
         methods: ['GET'],
         requirements: ['id' => '[1-9]\d*']
     )]
-    public function show(Classification $classification): Response
+    public function show(int $id, ClassificationRepository $repository): Response
     {
+        $classification = $repository->find($id);
+        if ($classification === null) {
+            return $this->redirectToRoute('app_classification_index');
+        }
         return $this->render('classification/show.html.twig', [
             'classification' => $classification,
         ]);

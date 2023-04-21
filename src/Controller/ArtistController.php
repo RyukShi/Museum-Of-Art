@@ -50,8 +50,9 @@ class ArtistController extends AbstractController
         methods: ['GET'],
         requirements: ['id' => '[1-9]\d*']
     )]
-    public function show(Artist $artist): Response
+    public function show(int $id, ArtistRepository $repository): Response
     {
+        $artist = $repository->find($id);
         if ($artist === null) {
             return $this->redirectToRoute('app_artist_index');
         }

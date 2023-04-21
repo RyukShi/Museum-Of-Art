@@ -33,8 +33,8 @@ class ArtistController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->save($artist, true);
             return $this->redirectToRoute(
-                'app_artist_index',
-                [],
+                'app_artist_show',
+                ['id' => $artist->getId()],
                 Response::HTTP_CREATED
             );
         }
@@ -78,8 +78,8 @@ class ArtistController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
             return $this->redirectToRoute(
-                'app_artist_index',
-                [],
+                'app_artist_show',
+                ['id' => $artist->getId()],
                 Response::HTTP_SEE_OTHER
             );
         }

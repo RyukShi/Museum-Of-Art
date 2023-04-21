@@ -31,8 +31,8 @@ class ClassificationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->save($classification, true);
             return $this->redirectToRoute(
-                'app_classification_index',
-                [],
+                'app_classification_show',
+                ['id' => $classification->getId()],
                 Response::HTTP_CREATED
             );
         }
@@ -75,8 +75,8 @@ class ClassificationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
             return $this->redirectToRoute(
-                'app_classification_index',
-                [],
+                'app_classification_show',
+                ['id' => $classification->getId()],
                 Response::HTTP_SEE_OTHER
             );
         }

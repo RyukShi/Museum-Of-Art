@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Classification{% endblock %}
+
+{% block body %}
+    <h1>Classification</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ classification.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ classification.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_classification_index') }}">back to list</a>
+
+    <a href="{{ path('app_classification_edit', {'id': classification.id}) }}">edit</a>
+{% endblock %}

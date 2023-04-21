@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Classification index{% endblock %}
+
+{% block body %}
+    <h1>Classification list</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for classification in classifications %}
+            <tr>
+                <td>{{ classification.name }}</td>
+                <td>
+                    <a href="{{ path('app_classification_show', {'id': classification.id}) }}">show</a>
+                    <a href="{{ path('app_classification_edit', {'id': classification.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">No records found in database</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_classification_new') }}">Create new</a>
+{% endblock %}

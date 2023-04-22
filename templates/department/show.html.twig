@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ department.name }}{% endblock %}
+
+{% block body %}
+    <h1>{{ department.name }}</h1>
+
+    <a href="{{ path('app_department_index') }}">back to list</a>
+{% endblock %}

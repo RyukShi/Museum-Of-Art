@@ -49,6 +49,13 @@ df.drop(
         "Tags AAT URL", "Tags Wikidata URL", "Rights and Reproduction"
     ], axis=1, inplace=True)
 
+# drop rows where either the Title, Object Name, ... column has a null
+df.dropna(subset=[
+    "Title", "Object Name", "Artist Display Name",
+    "Artist Begin Date", "Artist End Date", "Classification"], inplace=True)
+
+print(df.info())
+
 cities = df["City"].value_counts().to_dict()
 classifications = df["Classification"].value_counts().to_dict()
 countries = df["Country"].value_counts().to_dict()
@@ -89,11 +96,16 @@ data = {
     "subregion": unique(subregions)
 }
 
-with disk_engine.connect() as conn:
-    with conn.begin():
-        metadata = MetaData()
-        for table_name, rows in data.items():
-            table = Table(table_name, metadata, autoload_with=disk_engine)
-            for row in rows:
-                stmt = table.insert().values(name=row)
-                conn.execute(stmt)
+artists = df["Artist Display Name"].value_counts().to_dict()
+print(f"Total number of artists: {len(unique(artists))}")
+
+
+def insert_process():
+    with disk_engine.connect() as conn:
+        with conn.begin():
+            metadata = MetaData()
+            for table_name, rows in data.items():
+                table = Table(table_name, metadata, autoload_with=disk_engine)
+                for row in rows:
+                    stmt = table.insert().values(name=row)
+                    conn.execute(stmt)

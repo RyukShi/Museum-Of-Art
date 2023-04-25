@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Data\SearchArtist;
 use App\Entity\Artist;
 use App\Form\ArtistType;
+use App\Form\SearchArtistType;
 use App\Repository\ArtistRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -16,10 +18,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArtistController extends AbstractController
 {
     #[Route('/', name: 'app_artist_index', methods: ['GET'])]
-    public function index(ArtistRepository $repository): Response
-    {
+    public function index(
+        Request $request,
+        ArtistRepository $repository
+    ): Response {
+        $search = new SearchArtist();
+        $searchForm = $this->createForm(SearchArtistType::class, $search);
+        $searchForm->handleRequest($request);
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+            $filteredArtists = $repository->findSearch($search);
+        }
         return $this->render('artist/index.html.twig', [
-            'artists' => $repository->findAll(),
+            'artists' => $filteredArtists ?? $repository->findAll(),
         ]);
     }
 
